@@ -5,10 +5,8 @@
  */
 package dataaccess;
 
-/**
- *
- * @author mdkul
- */
+
+//Not sure what all has to be done with role     but ya
 public class RoleDB {
     
 }

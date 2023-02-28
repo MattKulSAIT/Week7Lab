@@ -9,6 +9,7 @@ package dataaccess;
  *
  * @author mdkul
  */
+//this has to be able to do everything with uses 
 public class UserDB {
     
 }
