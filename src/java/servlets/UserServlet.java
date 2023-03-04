@@ -5,11 +5,14 @@
  */
 package servlets;
 
+import dataaccess.UserDB;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.User;
 
 /**
  *
@@ -21,7 +24,11 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        UserDB DBconnection = new UserDB();
+        ArrayList<User> users = new ArrayList<>();
+        users = (ArrayList<User>)DBconnection.getall();
+        request.setAttribute("users", users);
+        getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
     }
 
     

@@ -16,9 +16,13 @@
     </head>
     <body>
         <h1>Manage Users</h1>
-        
-        For each loop 
-        
+        <table>   
+            <tr><th>Email</th><th>First Name</th><th>Last Name</th><th>Role</th><th></th><th></th></tr>
+            <c:forEach items="${users}" var="user">
+            <tr><td>user.email</td><td>user.firstName</td><td>user.lastName</td><td>user.role</td><td><a href="users?action=editUser;userEmail=${user.email}">Edit</a></td><td><a href="users?action=deleteUser;userEmail=${user.email}">Delete</a></td></tr>
+
+                </c:forEach>
+        </table> 
         <h2></h2>
         
     </body>

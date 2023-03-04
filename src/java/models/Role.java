@@ -10,5 +10,5 @@ package models;
  * @author mdkul
  */
 public class Role {
-    
+   
 }

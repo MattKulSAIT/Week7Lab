@@ -9,6 +9,7 @@ package services;
  *
  * @author mdkul
  */
+//There will be very little going on here
 public class RoleService {
     
 }
