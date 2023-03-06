@@ -18,4 +18,20 @@ public class User implements Serializable {
         this. password = password;
         this.role = role;
     }
+    
+    public String getEmail(){
+        return email;
+    }
+    
+     public String getfName(){
+        return firstName;
+    }
+     
+     public String getlName(){
+        return lastName;
+    }
+     
+     public int getRole(){
+        return role;
+    }
 }

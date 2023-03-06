@@ -28,6 +28,16 @@ public class UserServlet extends HttpServlet {
         ArrayList<User> users = new ArrayList<>();
         users = (ArrayList<User>)DBconnection.getall();
         request.setAttribute("users", users);
+        
+        String whatToDO = request.getParameter("action");
+        if(whatToDO ==  null){
+            String bottom = "Add User";
+            request.setAttribute("subTitle", bottom);
+        }
+        else if(whatToDO.equals("editUser")){
+            String bottom = "Edit User";
+            request.setAttribute("subTitle", bottom);
+        }
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
     }
 
