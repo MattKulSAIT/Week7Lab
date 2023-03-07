@@ -39,10 +39,18 @@
             </form>
         </c:when>
         <c:when test="${subTitle == 'Edit User'}">
-            stuff 
-            Notes for me: I think I will add another querir where is says
-            select * from user where email = UserEmail 
-            then I should be good
+            <form action="" method="post">
+                Email: ${userToEdit.email}<br>
+                First Name: <input type="text" name="firstName" value="${userToEdit.getfName()}"><br>
+                Last Name: <input type="text" name="latName" value="${userToEdit.getlName()}"><br>
+                Password: <input type="password" name="password"><br>
+                Role: <select>
+                    <c:forEach items="${roles}" var="role">
+                        <option value="${role.getId()}">${role.getName()}</option>
+                    </c:forEach>
+                </select><br>
+                <input type="button" value="Update"><input type="submit" value="Cancle">
+            </form>
         </c:when>   
         </c:choose>
         

@@ -59,4 +59,40 @@ public class UserDB {
     public void add(User user)throws Exception{
         
     }
+    
+    public User getUser(String user){
+        User theUser;
+        RoleDB roledb = new RoleDB();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection con = cp.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        String sql = "SELECT * FROM user where email = ?";
+        
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setString(1, user);
+            rs = ps.executeQuery();
+                while(rs.next()){
+                    String email = rs.getString(1);
+                    String fname = rs.getString(2);
+                    String lname = rs.getString(3);
+                    String pass = rs.getString(4);
+                    int rolenum = rs.getInt(5);
+                    Role role = roledb.getRole(rolenum);
+                    theUser = new User(email,fname,lname,pass,role);
+                    return theUser;
+                }
+        }
+        catch(Exception e){
+            
+        }
+        finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            cp.freeConnection(con);
+        }
+     return null;
+    }
 }

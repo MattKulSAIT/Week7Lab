@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Role;
 import models.User;
+import java.net.URLDecoder;
 
 /**
  *
@@ -43,6 +44,10 @@ public class UserServlet extends HttpServlet {
         else if(whatToDO.equals("editUser")){
             String bottom = "Edit User";
             request.setAttribute("subTitle", bottom);
+            String theUserEmail = request.getParameter("userEmail");
+            theUserEmail = theUserEmail.replace(" ", "+");
+            User theUser = DBconnection.getUser(theUserEmail);
+            request.setAttribute("userToEdit", theUser);
         }
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
     }
