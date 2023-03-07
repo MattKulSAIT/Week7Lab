@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import dataaccess.RoleDB;
 import dataaccess.UserDB;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Role;
 import models.User;
 
 /**
@@ -25,9 +27,13 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UserDB DBconnection = new UserDB();
+        RoleDB roleConnection = new RoleDB();
         ArrayList<User> users = new ArrayList<>();
+        ArrayList<Role> roles = new ArrayList<>();
         users = (ArrayList<User>)DBconnection.getall();
+        roles = (ArrayList<Role>)roleConnection.getall();
         request.setAttribute("users", users);
+        request.setAttribute("roles", roles);
         
         String whatToDO = request.getParameter("action");
         if(whatToDO ==  null){

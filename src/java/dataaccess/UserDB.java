@@ -6,7 +6,7 @@
 package dataaccess;
 
 import java.util.ArrayList;
-import models.User;
+import models.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,6 +22,7 @@ public class UserDB {
     }
     
     public List<User> getall(){
+        RoleDB roledb = new RoleDB();
         List<User> users = new ArrayList<>();
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection con = cp.getConnection();
@@ -38,7 +39,8 @@ public class UserDB {
                     String fname = rs.getString(2);
                     String lname = rs.getString(3);
                     String pass = rs.getString(4);
-                    int role = rs.getInt(5);
+                    int rolenum = rs.getInt(5);
+                    Role role = roledb.getRole(rolenum);
                     User user = new User(email,fname,lname,pass,role);
                     users.add(user);
                 }
