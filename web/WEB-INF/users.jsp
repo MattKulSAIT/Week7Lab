@@ -39,7 +39,7 @@
             </form>
         </c:when>
         <c:when test="${subTitle == 'Edit User'}">
-            <form action="" method="post">
+            <form action="" method="get">
                 Email: ${userToEdit.email}<br>
                 First Name: <input type="text" name="firstName" value="${userToEdit.getfName()}"><br>
                 Last Name: <input type="text" name="latName" value="${userToEdit.getlName()}"><br>
@@ -49,10 +49,9 @@
                         <option value="${role.getId()}">${role.getName()}</option>
                     </c:forEach>
                 </select><br>
-                <input type="button" value="Update"><input type="submit" value="Cancle">
+                <input type="submit" name="action" value="Update"><input type="submit" name="action" value="Cancel" >
             </form>
         </c:when>   
         </c:choose>
-        
     </body>
 </html>

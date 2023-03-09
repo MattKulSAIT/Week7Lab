@@ -37,7 +37,7 @@ public class UserServlet extends HttpServlet {
         request.setAttribute("roles", roles);
         
         String whatToDO = request.getParameter("action");
-        if(whatToDO ==  null){
+        if(whatToDO ==  null || whatToDO.equals("Cancel")){
             String bottom = "Add User";
             request.setAttribute("subTitle", bottom);
         }
@@ -49,6 +49,9 @@ public class UserServlet extends HttpServlet {
             User theUser = DBconnection.getUser(theUserEmail);
             request.setAttribute("userToEdit", theUser);
         }
+        else if(whatToDO.equals("Update")){
+            //Need to do this, I think I will have to Repopulate the array tho
+        }
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
     }
 
@@ -57,5 +60,11 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        
+        String whatToDo = (String) request.getAttribute("action");
+        //if (whatToDo.equals("cancel")){
+        //    request.setAttribute("action", null);
+        //    getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
+        //}
+        getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
     }
 }
