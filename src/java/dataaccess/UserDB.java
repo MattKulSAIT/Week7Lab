@@ -95,4 +95,101 @@ public class UserDB {
         }
      return null;
     }
+    
+    
+    public void updateUser(String email, String fname, String lname, String password, int role){
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection con = cp.getConnection();
+        PreparedStatement ps = null;
+        
+        String sql = "Update user set first_name = ?, last_name = ?, role = ?, password = ? where email = ?";
+        
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, fname);
+            ps.setString(2, lname);
+            ps.setString(3, role+"");
+            ps.setString(4, password);
+            ps.setString(5, email);
+            ps.executeUpdate();
+        } 
+        catch(Exception e){
+            
+        }
+            finally {
+            DBUtil.closePreparedStatement(ps);
+            cp.freeConnection(con);
+        }
+    }
+
+    
+    public void updateUser(String email, String fname, String lname, int role){
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection con = cp.getConnection();
+        PreparedStatement ps = null;
+        
+        String sql = "Update user set first_name = ?, last_name = ?, role = ? where email = ?";
+        
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, fname);
+            ps.setString(2, lname);
+            ps.setString(3, role+"");
+            ps.setString(4, email);
+            ps.executeUpdate();
+        } 
+        catch(Exception e){
+            
+        }
+            finally {
+            DBUtil.closePreparedStatement(ps);
+            cp.freeConnection(con);
+        }
+    }
+    
+    public void delete(String email){
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection con = cp.getConnection();
+        PreparedStatement ps = null;
+        
+         String sql = "delete from user where email = ?";
+         
+         try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.executeUpdate();
+        } 
+        catch(Exception e){
+            
+        }
+            finally {
+            DBUtil.closePreparedStatement(ps);
+            cp.freeConnection(con);
+        }
+    }
+    
+    public void addUser(String email,  String fname, String lname, String password, int id){
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection con = cp.getConnection();
+        PreparedStatement ps = null;
+        
+         String sql = "insert into user(email, first_name, last_name, password, role) values(?,?,?,?,?)";
+         
+         try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setString(2, fname);
+            ps.setString(3, lname);
+            ps.setString(4, password);
+            ps.setInt(5, id);
+            ps.executeUpdate();
+        } 
+        catch(Exception e){
+            
+        }
+            finally {
+            DBUtil.closePreparedStatement(ps);
+            cp.freeConnection(con);
+        }
+    }
 }

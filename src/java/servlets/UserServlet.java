@@ -35,8 +35,13 @@ public class UserServlet extends HttpServlet {
         roles = (ArrayList<Role>)roleConnection.getall();
         request.setAttribute("users", users);
         request.setAttribute("roles", roles);
+        String theUserEmail;
+        String stuff = request.getParameter("userEmail");
         
         String whatToDO = request.getParameter("action");
+        if(whatToDO == null || whatToDO.equals("Cancel") || whatToDO.equals("editUser")){
+            theUserEmail="";
+        }
         if(whatToDO ==  null || whatToDO.equals("Cancel")){
             String bottom = "Add User";
             request.setAttribute("subTitle", bottom);
@@ -44,13 +49,40 @@ public class UserServlet extends HttpServlet {
         else if(whatToDO.equals("editUser")){
             String bottom = "Edit User";
             request.setAttribute("subTitle", bottom);
-            String theUserEmail = request.getParameter("userEmail");
+            theUserEmail = request.getParameter("userEmail");
             theUserEmail = theUserEmail.replace(" ", "+");
             User theUser = DBconnection.getUser(theUserEmail);
             request.setAttribute("userToEdit", theUser);
         }
         else if(whatToDO.equals("Update")){
             //Need to do this, I think I will have to Repopulate the array tho
+            
+            String email = stuff.replace(" ", "+");
+            String fname = (String)request.getParameter("firstName");
+            String lname = (String)request.getParameter("latName");
+            String pass = (String)request.getParameter("password");
+            String roleId = request.getParameter("therole");   //This is giving me a null pointer
+            System.out.print(roleId);
+            int roleIdNum = Integer.parseInt(roleId);
+               //int roleId = theRole.getId();
+            if(pass.equals("")){
+                DBconnection.updateUser(email, fname, lname, roleIdNum);
+            }
+            else{
+                DBconnection.updateUser(email, fname, lname, pass, roleIdNum);
+            }
+            ArrayList<User> updateUsers = (ArrayList<User>)DBconnection.getall();
+            request.setAttribute("users", updateUsers);
+            String bottom = "Add User";
+            request.setAttribute("subTitle", bottom);
+        }
+        else if(whatToDO.equals("deleteUser")){
+            String email = stuff.replace(" ", "+");
+            DBconnection.delete(email);
+            String bottom = "Add User";
+            request.setAttribute("subTitle", bottom);
+            ArrayList<User> updateUsers = (ArrayList<User>)DBconnection.getall();
+            request.setAttribute("users", updateUsers);
         }
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
     }
@@ -59,12 +91,25 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
-        String whatToDo = (String) request.getAttribute("action");
-        //if (whatToDo.equals("cancel")){
-        //    request.setAttribute("action", null);
-        //    getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
-        //}
+        UserDB DBconnection = new UserDB();
+        String email = (String)request.getParameter("email");
+        String fname = (String)request.getParameter("firstName");
+        String lname = (String)request.getParameter("latName");
+        String pass = (String)request.getParameter("password");
+        String roleId = request.getParameter("therole");
+        int role = Integer.parseInt(roleId);
+        DBconnection.addUser(email, fname, lname, pass, role);
+        
+        ArrayList<User> updateUsers = (ArrayList<User>)DBconnection.getall();
+        request.setAttribute("users", updateUsers);
+        String bottom = "Add User";
+        request.setAttribute("subTitle", bottom);
+        RoleDB roleConnection = new RoleDB();
+        ArrayList<Role> roles = new ArrayList<>();
+        roles = (ArrayList<Role>)roleConnection.getall();
+        request.setAttribute("roles", roles);
+        
+        
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
     }
 }
