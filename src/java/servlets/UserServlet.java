@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Role;
 import models.User;
-import java.net.URLDecoder;
 
 /**
  *
@@ -33,6 +32,10 @@ public class UserServlet extends HttpServlet {
         ArrayList<Role> roles = new ArrayList<>();
         users = (ArrayList<User>)DBconnection.getall();
         roles = (ArrayList<Role>)roleConnection.getall();
+        int size = users.size();
+        if (size == 0){
+            request.setAttribute("people", "no");
+        }
         request.setAttribute("users", users);
         request.setAttribute("roles", roles);
         String theUserEmail;
@@ -55,16 +58,12 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("userToEdit", theUser);
         }
         else if(whatToDO.equals("Update")){
-            //Need to do this, I think I will have to Repopulate the array tho
-            
             String email = stuff.replace(" ", "+");
             String fname = (String)request.getParameter("firstName");
             String lname = (String)request.getParameter("latName");
             String pass = (String)request.getParameter("password");
-            String roleId = request.getParameter("therole");   //This is giving me a null pointer
-            System.out.print(roleId);
+            String roleId = request.getParameter("therole"); 
             int roleIdNum = Integer.parseInt(roleId);
-               //int roleId = theRole.getId();
             if(pass.equals("")){
                 DBconnection.updateUser(email, fname, lname, roleIdNum);
             }
@@ -83,6 +82,10 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("subTitle", bottom);
             ArrayList<User> updateUsers = (ArrayList<User>)DBconnection.getall();
             request.setAttribute("users", updateUsers);
+            
+        }
+        if (size == 0){
+            request.setAttribute("people", "no");
         }
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
     }
@@ -97,17 +100,22 @@ public class UserServlet extends HttpServlet {
         String lname = (String)request.getParameter("latName");
         String pass = (String)request.getParameter("password");
         String roleId = request.getParameter("therole");
-        int role = Integer.parseInt(roleId);
-        DBconnection.addUser(email, fname, lname, pass, role);
         
-        ArrayList<User> updateUsers = (ArrayList<User>)DBconnection.getall();
-        request.setAttribute("users", updateUsers);
-        String bottom = "Add User";
-        request.setAttribute("subTitle", bottom);
-        RoleDB roleConnection = new RoleDB();
-        ArrayList<Role> roles = new ArrayList<>();
-        roles = (ArrayList<Role>)roleConnection.getall();
-        request.setAttribute("roles", roles);
+        if(email.equals("") || fname.equals("") || lname.equals("") || pass.equals("")){
+            request.setAttribute("messUp", "mess");
+        }
+        else{
+            int role = Integer.parseInt(roleId);
+            DBconnection.addUser(email, fname, lname, pass, role);
+        }
+            ArrayList<User> updateUsers = (ArrayList<User>)DBconnection.getall();
+            request.setAttribute("users", updateUsers);
+            String bottom = "Add User";
+            request.setAttribute("subTitle", bottom);
+            RoleDB roleConnection = new RoleDB();
+            ArrayList<Role> roles = new ArrayList<>();
+            roles = (ArrayList<Role>)roleConnection.getall();
+            request.setAttribute("roles", roles);
         
         
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);

@@ -16,12 +16,17 @@
     </head>
     <body>
         <h1>Manage Users</h1>
-        <table border="1">   
-            <tr><th>Email</th><th>First Name</th><th>Last Name</th><th>Role</th><th></th><th></th></tr>
-            <c:forEach items="${users}" var="user">
-            <tr><td>${user.email}</td><td>${user.getfName()}</td><td>${user.getlName()}</td><td>${user.getRole().getName()}</td><td><a href="user?action=editUser&userEmail=${user.email}">Edit</a></td><td><a href="user?action=deleteUser&userEmail=${user.email}">Delete</a></td></tr>
-                </c:forEach>
-        </table> 
+        <c:choose>
+            <c:when test= "${people == no}">
+                        <table border="1">   
+                <tr><th>Email</th><th>First Name</th><th>Last Name</th><th>Role</th><th></th><th></th></tr>
+                <c:forEach items="${users}" var="user">
+                <tr><td>${user.email}</td><td>${user.getfName()}</td><td>${user.getlName()}</td><td>${user.getRole().getName()}</td><td><a href="user?action=editUser&userEmail=${user.email}">Edit</a></td><td><a href="user?action=deleteUser&userEmail=${user.email}">Delete</a></td></tr>
+                    </c:forEach>
+            </table> 
+            </c:when>
+            <c:otherwise>No Users Please Add One</c:otherwise>
+        </c:choose>
         <h2>${subTitle}</h2>
         <c:choose> 
             <c:when test="${subTitle == 'Add User'}">
@@ -35,7 +40,10 @@
                         <option value="${role.getId()}">${role.getName()}</option>
                     </c:forEach>
                 </select><br>
-                <input type="submit" value="Add User">
+                <input type="submit" value="Add User">   
+                <c:if test= "${messUp != mess}">
+                    <p>All Fields need to be filled</p>
+                </c:if>
             </form>
         </c:when>
         <c:when test="${subTitle == 'Edit User'}">
